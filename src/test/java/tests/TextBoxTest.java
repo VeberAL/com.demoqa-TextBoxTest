@@ -1,25 +1,27 @@
 package tests;
 
 import org.junit.jupiter.api.Test;
+import pages.LoginPage;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
-
-public class TextBoxTest {
+public class TextBoxTest extends TestBase {
+    LoginPage loginPage = new LoginPage();
+    String name = "Alexaner",
+            mail = "aleo83@rambler.ru",
+            currentAddress = "Baikonur, Koroleva st, 2",
+            permanentAddress = "Penza, 65 Oktober st, 83";
 
     @Test
     void fillFormTest() {
-        open("/text-box");
-        $("#userName").setValue("Alex");
-        $("#userEmail").setValue("alex@egorov.com");
-        $("#currentAddress").setValue("Some street 1");
-        $("#permanentAddress").setValue("Another street 1");
-        $("#submit").click();
+        loginPage.openPage()
+                .setUserName(name)
+                .setUserEmail(mail)
+                .setCurrentAddress(currentAddress)
+                .setPermanentAddress(permanentAddress)
+                .buttonClick();
 
-        $("#output #name").shouldHave(text("Alex"));
-        $("#output #email").shouldHave(text("alex@egorov.com"));
-        $("#output #currentAddress").shouldHave(text("Some street 1"));
-        $("#output #permanentAddress").shouldHave(text("Another street 1"));
+        loginPage.checkData("#output #name", name)
+                .checkData("#output #email", mail)
+                .checkData("#output #currentAddress", currentAddress)
+                .checkData("#output #permanentAddress", permanentAddress);
     }
 }
